@@ -20,7 +20,7 @@ Scripts used to set up the lightsail instance
 
 - Copy and Paste this code and wait for the success message.
 
-| :warning: Make sure you replace **DB_PASSWORD** with the server's DB Password  |
+| :warning: Make sure you replace **DB_PASSWORD** with the server's DB password  |
 | --- |
 ```bash
  curl https://raw.githubusercontent.com/nativerank/automated-instance-setup/master/setup.sh | bash -s -- --password=DB_PASSWORD
