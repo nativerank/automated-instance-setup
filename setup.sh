@@ -8,22 +8,22 @@ WP_ROCKET_SETTINGS='{"analytics_enabled":"1","cache_mobile":1,"purge_cron_interv
 CLOUDFLARE_API_KEY=$(wp option pluck wp_rocket_settings cloudflare_api_key)
 DB_PASSWORD=$(wp config get DB_PASSWORD)
 
-if [[ -z "${param[siteurl]}" ]]; then
+if [[ -z "$1" ]]; then
   printf -- "\n Invalid or no argument supplied \n"
   printf -- "\n CORRECT SYNTAX ---> ${FORMAT} \n"
   exit 64
 fi
 
-for i in "${!param[@]}"; do
+for i in "$@"; do
   case $i in
-  password*)
-    PASSWORD="${param[$i]}"
+  -p=* | --password=*)
+    PASSWORD="${i#*=}"
   ;;
-  devslug*)
-    DEVSITE_SLUG="${param[$i]}"
+  -d=* | --dev-slug=*)
+    DEVSITE_SLUG="${i#*=}"
     ;;
-  siteurl*)
-    SITE_URL="${param[$i]}"
+  -s=* | --site-url=*)
+    SITE_URL="${i#*=}"
     ;;
   skipredis*)
     REDIS=0
@@ -40,7 +40,7 @@ for i in "${!param[@]}"; do
   esac
 done
 
-if [[ -z "$PASSWORD" || $PASSWORD != $DB_PASSWORD ]]; then
+if [[ -z "$PASSWORD" || $PASSWORD != "$DB_PASSWORD" ]]; then
     printf -- "Invalid or missing password \n"
     exit 64
 fi
