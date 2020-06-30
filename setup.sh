@@ -177,6 +177,7 @@ initiate_lighsailScript() {
   wp cache flush --skip-plugins=w3-total-cache
   wp plugin activate wp-rocket
 
+  wp option update wp_nr_old_siteurl "$SITE_URL"
 }
 
 printf -- "\n Initiating scripts... \n"
