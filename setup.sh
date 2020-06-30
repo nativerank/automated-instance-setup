@@ -41,9 +41,14 @@ for i in "$@"; do
   esac
 done
 
-if [[ -z "$PASSWORD" || $PASSWORD != "$DB_PASSWORD" ]]; then
+if [[ -z "$PASSWORD" ]]; then
     printf -- "Invalid or missing password \n"
     exit 64
+fi
+
+if [[ $PASSWORD != "$DB_PASSWORD" ]]; then
+  printf -- "Invalid or missing password \n"
+  exit 64
 fi
 
 if [[ -z "$DEVSITE_SLUG" ]]; then
