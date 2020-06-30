@@ -25,10 +25,10 @@ for i in "$@"; do
   -s=* | --site-url=*)
     SITE_URL="${i#*=}"
     ;;
-  skipredis*)
+  skip-redis*)
     REDIS=0
     ;;
-  skippagespeed*)
+  skip-pagespeed*)
     PAGESPEED=0
     ;;
   --default)
