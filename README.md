@@ -17,6 +17,7 @@ Scripts used to set up the lightsail instance
 
 - Copy and Paste this code and wait for the success message.
 
+| Command |
 | --- |
 ```bash
  curl https://raw.githubusercontent.com/nativerank/automated-instance-setup/master/setup.sh | bash -s --
