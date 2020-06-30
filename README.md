@@ -15,6 +15,9 @@ Scripts used to set up the lightsail instance
 
 ### Setup Script
 
+| :warning: Typically you will not need to run this script manually, turning off development mode in the NR plugin on a new instance will prompt you to run it through the plugin  |
+| --- |
+
 - Copy and Paste this code and wait for the success message.
 
 | :warning: Make sure you replace **DB_PASSWORD** with the server's DB Password  |
