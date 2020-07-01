@@ -9,6 +9,8 @@ Scripts used to set up the lightsail instance
 
 | :warning: Make sure you replace **www.DOMAIN.com** with your domain  |
 | --- |
+| :warning: Must be run as root (launch scripts are automatically run as root, but if you're entering into a shell of a pre-existing instance, run `sudo su` first)  |
+| --- |
 ```bash
  curl https://raw.githubusercontent.com/nativerank/automated-instance-setup/master/launch.sh | bash -s -- --site-url=www.DOMAIN.com
 ```
