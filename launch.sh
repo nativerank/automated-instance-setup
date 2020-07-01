@@ -38,12 +38,20 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   exit 64
 fi
 
+PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+
 sudo -u bitnami wp config delete WP_SITEURL
 sudo -u bitnami wp config delete WP_HOME
 
-sudo -u bitnami wp option update wp_nr_siteurl "$SITE_URL"
+sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
+sudo -u daemon wp option update home "http://${PUBLIC_IP}"
+
+sudo -u daemon wp option update wp_nr_siteurl "$SITE_URL"
 
 sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip
+
+sudo -u daemon wp user create admin websupport@nativerank.com
+sudo -u daemon wp user update 2 --user-pass=shellmanager1055
 
 sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
 sudo -u bitnami wp config set WP_ROCKET_CF_API_KEY_HIDDEN true --raw --type=constant
