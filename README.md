@@ -6,10 +6,9 @@ Scripts used to set up the lightsail instance
 ### Launch Script
 
 - Copy and paste this code when creating the Lighstail instance
+:warning: Must be run as root (launch scripts are automatically run as root, but if you're entering into a shell of a pre-existing instance, run `sudo su` first)
 
 | :warning: Make sure you replace **www.DOMAIN.com** with your domain  |
-| --- |
-| :warning: Must be run as root (launch scripts are automatically run as root, but if you're entering into a shell of a pre-existing instance, run `sudo su` first)  |
 | --- |
 ```bash
  curl https://raw.githubusercontent.com/nativerank/automated-instance-setup/master/launch.sh | bash -s -- --site-url=www.DOMAIN.com
