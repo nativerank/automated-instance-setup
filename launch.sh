@@ -48,9 +48,9 @@ sudo -u daemon wp option update home "http://${PUBLIC_IP}"
 
 sudo -u daemon wp option update wp_nr_siteurl "$SITE_URL"
 
-sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip
+sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
 
-sudo -u daemon wp user create admin websupport@nativerank.com
+sudo -u daemon wp user create admin websupport@nativerank.com --role=administrator
 sudo -u daemon wp user update 2 --user-pass=shellmanager1055
 
 sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
