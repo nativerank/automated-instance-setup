@@ -46,12 +46,12 @@ sudo -u bitnami wp config delete WP_HOME
 sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
 sudo -u daemon wp option update home "http://${PUBLIC_IP}"
 
-sudo -u daemon wp option update wp_nr_siteurl "$SITE_URL"
+wp config set WP_NR_SITEURL "${SITE_URL}"
 
 sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
 
 sudo -u daemon wp user create admin websupport@nativerank.com --role=administrator
-sudo -u daemon wp user update 2 --user-pass=shellmanager1055
+sudo -u daemon wp user update 2 --user_pass=shellmanager1055
 
 sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
 sudo -u bitnami wp config set WP_ROCKET_CF_API_KEY_HIDDEN true --raw --type=constant
