@@ -110,15 +110,15 @@ initiate_lighsailScript() {
   printf -- "\n DEBUG: PUBLIC_IP ${PUBLIC_IP} \n"
 
   printf -- "\n Replace PUBLIC IP with production URL....... \n"
-  echo wp search-replace "${PUBLIC_IP}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
-  echo wp search-replace "nrdevsites.com" "nativerank.dev" --skip-plugins=w3-total-cache --all-tables --report-changed-only
-  echo wp search-replace "www.nativerank.dev" "nativerank.dev" --skip-plugins=w3-total-cache --all-tables --report-changed-only
+  wp search-replace "${PUBLIC_IP}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
+  wp search-replace "nrdevsites.com" "nativerank.dev" --skip-plugins=w3-total-cache --all-tables --report-changed-only
+  wp search-replace "www.nativerank.dev" "nativerank.dev" --skip-plugins=w3-total-cache --all-tables --report-changed-only
 
   printf -- "\n Replacing devsite slug (escaped) with production URL....... \n"
-  echo wp search-replace "nativerank.dev\\/${DEVSITE_SLUG}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
+  wp search-replace "nativerank.dev\\/${DEVSITE_SLUG}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
 
   printf -- "\n Replacing devsite slug with production (unescaped) URL....... \n"
-  echo wp search-replace "nativerank.dev/${DEVSITE_SLUG}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
+  wp search-replace "nativerank.dev/${DEVSITE_SLUG}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
 
   printf -- "\n Running the same replacements on Less and CSS....... \n"
 
@@ -151,8 +151,8 @@ initiate_lighsailScript() {
   find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/templates/ -name "*.hbs" -exec sed -i "s/http:\/\/${SITE_URL}/https:\/\/${SITE_URL}/g" {} +
 
   printf -- "\n Making it secure [http -> https]....... \n"
-
-  echo wp search-replace "http://${SITE_URL}" "https://${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
+  
+  wp search-replace "http://${SITE_URL}" "https://${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
 
   printf -- "\n Setting site URL in WordPress....... \n"
 
