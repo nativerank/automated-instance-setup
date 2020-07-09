@@ -46,7 +46,7 @@ sudo -u bitnami wp config delete WP_HOME
 sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
 sudo -u daemon wp option update home "http://${PUBLIC_IP}"
 
-wp config set WP_NR_SITEURL "${SITE_URL}"
+sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
 
 sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
 
