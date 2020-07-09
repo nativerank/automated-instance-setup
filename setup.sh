@@ -100,8 +100,15 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   exit 64
 fi
 
+
+
 initiate_lighsailScript() {
-  PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+  PUBLIC_IP="$(dig +short myip.opendns.com @xresolver1.opendns.com)"
+  
+  printf -- "\n DEBUG: DEVSITE SLUG ${DEVSITE_SLUG} \n"
+  printf -- "\n DEBUG: SITEURL ${SITE_URL} \n"
+  printf -- "\n DEBUG: PUBLIC_IP ${PUBLIC_IP} \n"
+
   printf -- "\n Replace PUBLIC IP with production URL....... \n"
   wp search-replace "${PUBLIC_IP}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
   wp search-replace "nrdevsites.com" "nativerank.dev" --skip-plugins=w3-total-cache --all-tables --report-changed-only
