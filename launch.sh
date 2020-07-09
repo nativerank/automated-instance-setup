@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -xv
+
 if [[ -z "$1" ]]; then
   exit 64
 fi
