@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -xv
+
 FORMAT="--site-url=www.domain.com"
 REDIS=1
 PAGESPEED=1
