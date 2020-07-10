@@ -12,7 +12,6 @@ DB_PASSWORD=$(wp config get DB_PASSWORD)
 SITE_URL=$(wp config get WP_NR_SITEURL)
 PUBLIC_IP=$(wp config get PUBLIC_IP)
 
-
 if [[ -z "$1"  && -z "$SITE_URL" ]]; then
   printf -- "\n Invalid or no argument supplied \n"
   printf -- "\n CORRECT SYNTAX ---> ${FORMAT} \n"
@@ -105,6 +104,7 @@ fi
 
 
 initiate_lighsailScript() {  
+  ZONE_ID=$(curl -X POST -H "Content-Type: application/json" -d "{\"domain\": \"${SITE_URL}\"}" https://nativerank.dev/cloudflareapi/zone_id)
   
   printf -- "\n DEBUG: DEVSITE SLUG ${DEVSITE_SLUG} \n"
   printf -- "\n DEBUG: SITEURL ${SITE_URL} \n"
