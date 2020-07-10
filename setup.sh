@@ -103,7 +103,8 @@ fi
 
 
 initiate_lighsailScript() {
-  PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+  PUBLIC_IP="$(wp config get PUBLIC_IP)"
+  
   
   printf -- "\n DEBUG: DEVSITE SLUG ${DEVSITE_SLUG} \n"
   printf -- "\n DEBUG: SITEURL ${SITE_URL} \n"
