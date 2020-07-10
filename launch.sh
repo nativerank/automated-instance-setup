@@ -40,7 +40,7 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   exit 64
 fi
 
-PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+PUBLIC_IP="$(wp config get PUBLIC_IP)"
 
 sudo -u bitnami wp config delete WP_SITEURL
 sudo -u bitnami wp config delete WP_HOME
