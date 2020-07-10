@@ -64,6 +64,7 @@ sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache
 
 /opt/bitnami/apps/wordpress/bnconfig --disable_banner 1
 
-sudo apt-get install redis-server -y
+apt-get update
+apt-get install redis-server -y
 
 /opt/bitnami/ctlscript.sh restart apache
