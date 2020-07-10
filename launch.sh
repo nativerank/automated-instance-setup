@@ -40,7 +40,7 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   exit 64
 fi
 
-PUBLIC_IP="$(wp config get PUBLIC_IP)"
+PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 
 sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
 
