@@ -10,6 +10,8 @@ WP_ROCKET_SETTINGS='{"analytics_enabled":"1","cache_mobile":1,"purge_cron_interv
 CLOUDFLARE_API_KEY=$(wp option pluck wp_rocket_settings cloudflare_api_key)
 DB_PASSWORD=$(wp config get DB_PASSWORD)
 SITE_URL=$(wp config get WP_NR_SITEURL)
+PUBLIC_IP=$(wp config get PUBLIC_IP)
+
 
 if [[ -z "$1"  && -z "$SITE_URL" ]]; then
   printf -- "\n Invalid or no argument supplied \n"
@@ -102,9 +104,7 @@ fi
 
 
 
-initiate_lighsailScript() {
-  PUBLIC_IP="$(wp config get PUBLIC_IP)"
-  
+initiate_lighsailScript() {  
   
   printf -- "\n DEBUG: DEVSITE SLUG ${DEVSITE_SLUG} \n"
   printf -- "\n DEBUG: SITEURL ${SITE_URL} \n"
