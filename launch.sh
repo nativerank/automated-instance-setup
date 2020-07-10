@@ -42,8 +42,12 @@ fi
 
 PUBLIC_IP="$(wp config get PUBLIC_IP)"
 
+sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
+
 sudo -u bitnami wp config delete WP_SITEURL
 sudo -u bitnami wp config delete WP_HOME
+
+ 
 
 sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
 sudo -u daemon wp option update home "http://${PUBLIC_IP}"
@@ -57,6 +61,8 @@ sudo -u daemon wp user update 2 --user_pass=shellmanager1055
 
 sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
 sudo -u bitnami wp config set WP_ROCKET_CF_API_KEY_HIDDEN true --raw --type=constant
+
+
 
 
 sed -i "s/ModPagespeed on/ModPagespeed on\n\nModPagespeedRespectXForwardedProto on\nModPagespeedLoadFromFileMatch \"^https\?:\/\/${SITE_URL}\/\" \"\/opt\/bitnami\/apps\/wordpress\/htdocs\/\"\n\nModPagespeedLoadFromFileRuleMatch Disallow .\*;\n\nModPagespeedLoadFromFileRuleMatch Allow \\\.css\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.jpe\?g\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.png\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.gif\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.js\$;\n\nModPagespeedDisallow \"\*favicon\*\"\nModPagespeedDisallow \"\*.svg\"\nModPagespeedDisallow \"\*.mp4\"\nModPagespeedDisallow \"\*.txt\"\nModPagespeedDisallow \"\*.xml\"\n\nModPagespeedInPlaceSMaxAgeSec -1\nModPagespeedLazyloadImagesAfterOnload off/g" /opt/bitnami/apache2/conf/pagespeed.conf
