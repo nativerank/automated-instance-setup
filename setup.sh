@@ -169,10 +169,9 @@ initiate_lighsailScript() {
     wp redis enable
   fi
 
-    printf -- "\n Running wp cache flush and activating WP Rocket....... \n"
+    printf -- "\n Running wp cache flush....... \n"
 
   wp cache flush --skip-plugins=w3-total-cache
-  wp plugin activate wp-rocket
   
   printf -- "\n Setting site URL in WordPress....... \n"
 
