@@ -17,6 +17,8 @@ if [[ -z "$1"  && -z "$SITE_URL" ]]; then
   exit 64
 fi
 
+printf -- "\n DEV SLUG 1: ${DEVSITE_SLUG}"
+
 for i in "$@"; do
   case $i in
   -d=* | --dev-slug=*)
@@ -39,6 +41,8 @@ for i in "$@"; do
     ;;
   esac
 done
+
+printf -- "\n DEV SLUG 2: ${DEVSITE_SLUG}"
 
 if [[ -z "$DEVSITE_SLUG" ]]; then
     printf -- "\n Invalid or missing Devsite Slug \n"
