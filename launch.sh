@@ -73,4 +73,6 @@ sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache
 apt-get update
 apt-get install redis-server -y
 
+sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
+
 /opt/bitnami/ctlscript.sh restart apache
