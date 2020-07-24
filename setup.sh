@@ -95,6 +95,7 @@ initiate_lighsailScript() {
   #printf -- "\n DEBUG: DEVSITE SLUG ${DEVSITE_SLUG} \n"
   #printf -- "\n DEBUG: SITEURL ${SITE_URL} \n"
   #printf -- "\n DEBUG: PUBLIC_IP ${PUBLIC_IP} \n"
+  printf -- "\n DEBUG: CLOUDFLARE API KEY ${CLOUDFLARE_API_KEY} \n"
 
   printf -- "\n Replace PUBLIC IP ${PUBLIC_IP} with production URL ${SITE_URL}....... \n"
   wp search-replace "${PUBLIC_IP}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
