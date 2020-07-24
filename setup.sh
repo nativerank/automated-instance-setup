@@ -154,7 +154,7 @@ initiate_lighsailScript() {
   ZONE_ID=$(curl -X POST -H "Content-Type: application/json" -d "{\"domain\": \"${SITE_URL}\"}" https://nativerank.dev/cloudflareapi/zone_id)
 
   if [[ -n "$CLOUDFLARE_API_KEY" ]]; then
-    echo "$CLOUDFLARE_API_KEY" | wp option patch insert wp_rocket_settings cloudflare_api_key
+    echo "${CLOUDFLARE_API_KEY}" | wp option patch insert wp_rocket_settings cloudflare_api_key
     fi
   if [[ -n "$ZONE_ID" ]]; then
     echo 1 | wp option patch update wp_rocket_settings do_cloudflare
@@ -162,7 +162,7 @@ initiate_lighsailScript() {
     wp plugin deactivate cloudflare
   fi
   
-  WP_ROCKET_SETTINGS=${wp option get wp_rocket_settings}
+  WP_ROCKET_SETTINGS=$(wp option get wp_rocket_settings)
   
   printf -- "\n WP ROCKET SETTINGS: $WP_ROCKET_SETTINGS \n"
 
