@@ -6,40 +6,6 @@ if [[ -z "$1" ]]; then
   exit 64
 fi
 
-for i in "$@"; do
-  case $i in
-  -s=* | --site-url=*)
-    SITE_URL="${i#*=}"
-    ;;
-  --default)
-    DEFAULT=YES
-    ;;
-  *)
-    # unknown option
-    ;;
-  esac
-done
-
-if [[ $SITE_URL == *http* ]]; then
-  exit 64
-fi
-
-# if [[ $SITE_URL != www* ]]; then
-#   exit 64
-# fi
-
-if [[ "${SITE_URL}" == */* ]]; then
-  exit 64
-fi
-
-if [[ "${SITE_URL}" == *. ]]; then
-  exit 64
-fi
-
-if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
-  exit 64
-fi
-
 PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 
 sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
@@ -49,8 +15,6 @@ sudo -u bitnami wp config delete WP_HOME
 
 sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
 sudo -u daemon wp option update home "http://${PUBLIC_IP}"
-
-sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
 
 sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
 
@@ -71,3 +35,44 @@ apt-get install redis-server -y
 sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
 
 /opt/bitnami/ctlscript.sh restart apache
+
+for i in "$@"; do
+  case $i in
+  -s=* | --site-url=*)
+    SITE_URL="${i#*=}"
+    ;;
+  --default)
+    DEFAULT=YES
+    ;;
+  *)
+    # unknown option
+    ;;
+  esac
+done
+
+if [[ $SITE_URL == *http* ]]; then
+  printf -- "\n Site URL cannot contain protocol \n"
+  exit 64
+fi
+
+# if [[ $SITE_URL != www* ]]; then
+#   exit 64
+# fi
+
+if [[ "${SITE_URL}" == */* ]]; then
+  printf -- "\n Site URL cannot start with a slash \n"
+  exit 64
+fi
+
+if [[ "${SITE_URL}" == *. ]]; then
+  printf -- "\n Site URL must contain a TLD (top-level domain) \n"
+  exit 64
+fi
+
+if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
+  printf -- "\n Make sure to insert your Site URL in place of 'www.DOMAIN.com' \n"
+  exit 64
+fi
+
+printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
+sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
