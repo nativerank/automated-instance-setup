@@ -24,9 +24,9 @@ if [[ $SITE_URL == *http* ]]; then
   exit 64
 fi
 
-if [[ $SITE_URL != www* ]]; then
-  exit 64
-fi
+# if [[ $SITE_URL != www* ]]; then
+#   exit 64
+# fi
 
 if [[ "${SITE_URL}" == */* ]]; then
   exit 64
