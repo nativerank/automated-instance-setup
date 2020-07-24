@@ -161,6 +161,10 @@ initiate_lighsailScript() {
     echo "$ZONE_ID" | wp option patch insert wp_rocket_settings cloudflare_zone_id
     wp plugin deactivate cloudflare
   fi
+  
+  WP_ROCKET_SETTINGS=${wp option get wp_rocket_settings}
+  
+  printf -- "\n WP ROCKET SETTINGS: $WP_ROCKET_SETTINGS \n"
 
     printf -- "\n Updating Redis Object Cache WP Plugin....... \n"
   wp plugin update redis-cache
