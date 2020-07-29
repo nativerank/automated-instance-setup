@@ -94,7 +94,7 @@ initiate_lighsailScript() {
   #printf -- "\n DEBUG: DEVSITE SLUG ${DEVSITE_SLUG} \n"
   #printf -- "\n DEBUG: SITEURL ${SITE_URL} \n"
   #printf -- "\n DEBUG: PUBLIC_IP ${PUBLIC_IP} \n"
-  printf -- "\n DEBUG: CLOUDFLARE API KEY ${CLOUDFLARE_API_KEY} \n"
+  #printf -- "\n DEBUG: CLOUDFLARE API KEY ${CLOUDFLARE_API_KEY} \n"
 
   printf -- "\n Replace PUBLIC IP ${PUBLIC_IP} with production URL ${SITE_URL}....... \n"
   wp search-replace "${PUBLIC_IP}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
@@ -160,10 +160,6 @@ initiate_lighsailScript() {
     echo "$ZONE_ID" | wp option patch insert wp_rocket_settings cloudflare_zone_id
     wp plugin deactivate cloudflare
   fi
-  
-  WP_ROCKET_SETTINGS=$(wp option get wp_rocket_settings)
-  
-  printf -- "\n WP ROCKET SETTINGS: ${WP_ROCKET_SETTINGS} \n"
 
     printf -- "\n Updating Redis Object Cache WP Plugin....... \n"
   wp plugin update redis-cache
