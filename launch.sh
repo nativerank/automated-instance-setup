@@ -39,8 +39,8 @@ for i in "$@"; do
   -s=* | --site-url=*)
     SITE_URL="${i#*=}"
     ;;
-  -p=* | --password=*)
-    PASSWORD="${i#*=}"
+  -tp=* | --temp-password=*)
+    TEMP_PASSWORD="${i#*=}"
     ;;
   --default)
     DEFAULT=YES
@@ -76,7 +76,7 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
 fi
 
 sudo -u daemon wp user create admin websupport@nativerank.com --role=administrator
-sudo -u daemon wp user update 2 --user_pass="$PASSWORD"
+sudo -u daemon wp user update 2 --user_pass="$TEMP_PASSWORD"
 
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
 sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
