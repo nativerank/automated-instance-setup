@@ -82,8 +82,10 @@ sudo -u daemon wp user create admin websupport@nativerank.com --role=administrat
 sudo -u daemon wp user update 2 --user_pass="$TEMP_PASSWORD"
 
 if [[ -n "$PASSWORD" ]]; then
-  sudo -u daemon touch /opt/bitnami/wp_password.txt 
-  sudo -u daemon echo "$PASSWORD" > /opt/bitnami/wp_password.txt 
+  touch /opt/bitnami/wp_password.txt 
+  echo "$PASSWORD" > /opt/bitnami/wp_password.txt 
+  chown daemon:daemon /opt/bitnami/wp_password.txt
+  chmod 770 /opt/bitnami/wp_password.txt
 fi
 
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
