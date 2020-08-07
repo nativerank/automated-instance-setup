@@ -2,10 +2,6 @@
 
 set -xv
 
-if [[ -z "$1" ]]; then
-  exit 64
-fi
-
 PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 
 sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
@@ -17,9 +13,6 @@ sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
 sudo -u daemon wp option update home "http://${PUBLIC_IP}"
 
 sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
-
-sudo -u daemon wp user create admin websupport@nativerank.com --role=administrator
-sudo -u daemon wp user update 2 --user_pass=shellmanager1055
 
 sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
 # commented out to try to fix issue with CF API key getting removed from options
@@ -37,10 +30,17 @@ sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
 
 /opt/bitnami/ctlscript.sh restart apache
 
+if [[ -z "$1" ]] || [[ -z "$2" ]]; then
+  exit 64
+fi
+
 for i in "$@"; do
   case $i in
   -s=* | --site-url=*)
     SITE_URL="${i#*=}"
+    ;;
+  -p=* | --password=*)
+    PASSWORD="${i#*=}"
     ;;
   --default)
     DEFAULT=YES
@@ -74,6 +74,9 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   printf -- "\n Make sure to insert your Site URL in place of 'www.DOMAIN.com' \n"
   exit 64
 fi
+
+sudo -u daemon wp user create admin websupport@nativerank.com --role=administrator
+sudo -u daemon wp user update 2 --user_pass="$PASSWORD"
 
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
 sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
