@@ -180,12 +180,16 @@ initiate_lighsailScript() {
   wp option update siteurl "https://${SITE_URL}"
   wp option update home "https://${SITE_URL}"
   
+  printf -- "\n WP PASSWORD $WP_PASSWORD \n"
   
   if [[ -n "$WP_PASSWORD" ]]; then
     printf -- "\n Creating nativeaccess user....... \n"
     wp user create nativeaccess websupport@nativerank.com --user_pass="$WP_PASSWORD" --role=administrator
     USER_ID=$(wp user list | grep 'nativeaccess' | head -c 1)
   fi
+  
+  printf -- "\n USER ID $USER_ID \n"
+  printf -- "\n TEMP_USER_ID $TEMP_USER_ID \n"
   
   if [[ -n "$USER_ID" ]]  && [[ -n "$TEMP_USER_ID" ]]; then
     printf -- "\n Deleting temp user....... \n"
