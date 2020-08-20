@@ -190,6 +190,8 @@ initiate_lighsailScript() {
       wp user delete "$TEMP_USER_ID" --reassign="$USER_ID" --yes
     fi
   fi
+  
+  wp option delete nativerank_seo_wp_last_sync --skip-plugins=w3-total-cache 
 
 }
 
