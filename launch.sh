@@ -83,9 +83,9 @@ sudo -u daemon wp user update 2 --user_pass="$TEMP_PASSWORD"
 
 if [[ -n "$PASSWORD" ]]; then
   touch /opt/bitnami/wp_password.txt 
-  echo "$PASSWORD" > /opt/bitnami/wp_password.txt 
-  chown daemon:daemon /opt/bitnami/wp_password.txt
-  chmod 770 /opt/bitnami/wp_password.txt
+  echo "$PASSWORD" > /tmp/wp_password/wp_password.txt 
+  chown -R daemon:daemon /tmp/wp_password/
+  chmod -R 770 /tmp/wp_password/
 fi
 
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
