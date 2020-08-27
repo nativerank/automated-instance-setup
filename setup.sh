@@ -181,13 +181,13 @@ initiate_lighsailScript() {
   wp option update home "https://${SITE_URL}"
     
   if [[ -n "$TEMP_USER_ID" ]] && [[ -n "$WP_PASSWORD" ]]; then
-    rm -f /opt/bitnami/wp_password.txt
     printf -- "\n Creating nativeaccess user....... \n"
     wp user create nativeaccess qa@nativerank.zohosupport.com --user_pass="$WP_PASSWORD" --role=administrator
     USER_ID=$(wp user list | grep 'nativeaccess' | head -c 1)
     if [[ -n "$USER_ID" ]]; then
       printf -- "\n Deleting temp user....... \n"
       wp user delete "$TEMP_USER_ID" --reassign="$USER_ID" --yes
+      rm -f /tmp/wp_password/wp_password.txt
     fi
   fi
   
