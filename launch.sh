@@ -82,7 +82,7 @@ sudo -u daemon wp user create admin websupport@nativerank.com --role=administrat
 sudo -u daemon wp user update 2 --user_pass="$TEMP_PASSWORD"
 
 if [[ -n "$PASSWORD" ]]; then
-  touch /tmp/wp_password/wp_password.txt 
+  touch /opt/bitnami/wp_password.txt 
   echo "$PASSWORD" > /tmp/wp_password/wp_password.txt 
   chown -R daemon:daemon /tmp/wp_password/
   chmod -R 770 /tmp/wp_password/
