@@ -145,11 +145,15 @@ initiate_lighsailScript() {
   printf -- "\n Making it secure [http -> https]....... \n"
   
   wp search-replace "http://${SITE_URL}" "https://${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
-
-  printf -- "\n Configuring WP Rocket plugin and setting WP_CACHE....... \n"
+  
+  printf -- "\n Temporarily disable redis....... \n"
   wp redis disable
-
-  wp plugin install https://wp-rocket.me/download/126649/9c61671e/
+  
+  printf -- "\n Install wp-fail2ban....... \n"
+  wp plugin install wp-fail2ban --activate
+ 
+  printf -- "\n Configuring WP Rocket plugin and setting WP_CACHE....... \n"
+  wp plugin install https://wp-rocket.me/download/126649/9c61671e/ --activate
 
   wp option update wp_rocket_settings "$WP_ROCKET_SETTINGS" --format=json
   ZONE_ID=$(curl -X POST -H "Content-Type: application/json" -d "{\"domain\": \"${SITE_URL}\"}" https://nativerank.dev/cloudflareapi/zone_id)
@@ -160,14 +164,14 @@ initiate_lighsailScript() {
   if [[ -n "$ZONE_ID" ]]; then
     echo 1 | wp option patch update wp_rocket_settings do_cloudflare
     echo "$ZONE_ID" | wp option patch insert wp_rocket_settings cloudflare_zone_id
-    wp plugin deactivate cloudflare
+    wp plugin deactivate cloudflare --uninstall
   fi
 
     printf -- "\n Updating Redis Object Cache WP Plugin....... \n"
   wp plugin update redis-cache
 
   if [[ $REDIS ]]; then
-    printf -- "\n Setting up and activating Redis Server....... \n"
+    printf -- "\n Reactivate redis....... \n"
     wp redis enable
   fi
 
