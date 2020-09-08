@@ -148,9 +148,6 @@ initiate_lighsailScript() {
   
   printf -- "\n Temporarily disable redis....... \n"
   wp redis disable
-  
-  printf -- "\n Install wp-fail2ban....... \n"
-  wp plugin install wp-fail2ban --activate
  
   printf -- "\n Configuring WP Rocket plugin and setting WP_CACHE....... \n"
   wp plugin install https://wp-rocket.me/download/126649/9c61671e/ --activate
