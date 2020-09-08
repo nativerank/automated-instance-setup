@@ -20,13 +20,6 @@ sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
 sed -i "s/ModPagespeed on/ModPagespeed on\n\nModPagespeedRespectXForwardedProto on\nModPagespeedLoadFromFileMatch \"^https\?:\/\/${SITE_URL}\/\" \"\/opt\/bitnami\/apps\/wordpress\/htdocs\/\"\n\nModPagespeedLoadFromFileRuleMatch Disallow .\*;\n\nModPagespeedLoadFromFileRuleMatch Allow \\\.css\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.jpe\?g\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.png\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.gif\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.js\$;\n\nModPagespeedDisallow \"\*favicon\*\"\nModPagespeedDisallow \"\*.svg\"\nModPagespeedDisallow \"\*.mp4\"\nModPagespeedDisallow \"\*.txt\"\nModPagespeedDisallow \"\*.xml\"\n\nModPagespeedInPlaceSMaxAgeSec -1\nModPagespeedLazyloadImagesAfterOnload off/g" /opt/bitnami/apache2/conf/pagespeed.conf
 sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache2/conf/pagespeed.conf
 
-# Copy default self-signed certs so it doesn't print warning in logs
-sudo cp /opt/bitnami/apache2/conf/server.crt /opt/bitnami/apps/wordpress/conf/certs/server.crt
-sudo cp /opt/bitnami/apache2/conf/server.key /opt/bitnami/apps/wordpress/conf/certs/server.key
-
-# 403 if user is accessing directly
-sed -i '1s/^/Redirect 403 \/\nErrorDocument 403 \"403 - You shall not pass.\"\n/' /opt/bitnami/apps/wordpress/conf/httpd-prefix.conf
-
 # Security headers
 sed -i 's/RequestHeader unset Proxy early/RequestHeader unset Proxy early\nHeader always set X-XSS-Protection "1; mode=block"\nHeader always set X-Content-Type-Options nosniff\nHeader always set Strict-Transport-Security "max-age=15768000; includeSubDomains"\n/i' /opt/bitnami/apache2/conf/httpd.conf
 
@@ -103,6 +96,13 @@ fi
 
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
 sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
+
+# Copy default self-signed certs so it doesn't print warning in logs
+sudo cp /opt/bitnami/apache2/conf/server.crt /opt/bitnami/apps/wordpress/conf/certs/server.crt
+sudo cp /opt/bitnami/apache2/conf/server.key /opt/bitnami/apps/wordpress/conf/certs/server.key
+
+# 403 if user is accessing directly
+sed -i '1s/^/Redirect 403 \/\nErrorDocument 403 \"403 - You shall not pass.\"\n/' /opt/bitnami/apps/wordpress/conf/httpd-prefix.conf
 
 # bitnami comes with one default vhost. Simply replace the example domain 
 sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
