@@ -51,8 +51,6 @@ sudo service fail2ban restart
 
 sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
 
-/opt/bitnami/ctlscript.sh restart
-
 if [[ -z "$1" ]] || [[ -z "$2" ]]; then
   exit 64
 fi
@@ -126,3 +124,5 @@ sed -i '1s/^/Redirect 403 \/\nErrorDocument 403 \"403 - You shall not pass.\"\n/
 sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
 sed -i -e "s/www.//i" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
 echo Include "/opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
+
+/opt/bitnami/ctlscript.sh restart
