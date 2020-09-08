@@ -24,12 +24,14 @@ sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache
 sudo cp /opt/bitnami/apache2/conf/server.crt /opt/bitnami/apps/wordpress/conf/certs/server.crt
 sudo cp /opt/bitnami/apache2/conf/server.key /opt/bitnami/apps/wordpress/conf/certs/server.key
 
-# bitnami comes with one default vhost. Simply replace the example domain 
-sed -i -e "s/wordpress.example.com/islandlakemarine.com/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
-echo Include "/opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
-
 # 403 if user is accessing directly
 sed -i '1s/^/Redirect 403 \/\nErrorDocument 403 \"403 - You shall not pass.\"\n/' /opt/bitnami/apps/wordpress/conf/httpd-prefix.conf
+
+# Security headers
+sed -i 's/RequestHeader unset Proxy early/RequestHeader unset Proxy early\nHeader always set X-XSS-Protection "1; mode=block"\nHeader always set X-Content-Type-Options nosniff\nHeader always set Strict-Transport-Security "max-age=15768000; includeSubDomains"\n/i' /opt/bitnami/apache2/conf/httpd.conf
+
+# Turn off expose_php in php.ini
+ssed -i 's/expose_php \?= \?On/expose_php = Off/i' /opt/bitnami/php/etc/php.ini
 
 /opt/bitnami/apps/wordpress/bnconfig --disable_banner 1
 
@@ -38,7 +40,7 @@ apt-get install redis-server -y
 
 sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
 
-/opt/bitnami/ctlscript.sh restart apache
+/opt/bitnami/ctlscript.sh restart
 
 if [[ -z "$1" ]] || [[ -z "$2" ]]; then
   exit 64
@@ -101,3 +103,7 @@ fi
 
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
 sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
+
+# bitnami comes with one default vhost. Simply replace the example domain 
+sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
+echo Include "/opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
