@@ -2,18 +2,26 @@
 
 set -xv
 
+# get public ip
 PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 
+# save to wp config
 sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
 
+# delete siteurl and home url from wp config so they'll only use option values, so our setup script (runs as daemon) can update them
 sudo -u bitnami wp config delete WP_SITEURL
 sudo -u bitnami wp config delete WP_HOME
 
 sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
 sudo -u daemon wp option update home "http://${PUBLIC_IP}"
 
+# set permissions for some plugin installation, etc. later on
+chown -R daemon:bitnami /opt/bitnami/apps/wordpress/htdocs/wp-content/
+
+# install updraftplus
 sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
 
+# ensure WP Rocket can cache the site
 sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
 
 # pagespeed
@@ -28,8 +36,18 @@ ssed -i 's/expose_php \?= \?On/expose_php = Off/i' /opt/bitnami/php/etc/php.ini
 
 /opt/bitnami/apps/wordpress/bnconfig --disable_banner 1
 
+# install redis-server
 apt-get update
 apt-get install redis-server -y
+
+# install fail2ban and wp-fail2ban
+apt-get install fail2ban -y
+sudo -u daemon wp plugin install wp-fail2ban --activate
+cp /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins/wp-fail2ban/filters.d/wordpress-hard.conf /etc/fail2ban/filter.d/
+
+printf '\n\n%s\n\n' '[wordpress-hard]' >> /etc/fail2ban/jail.conf
+printf '%s\n' 'enabled = true' 'filter = wordpress-hard' 'logpath = /var/log/auth.log' 'maxretry = 3' 'port = http,https' 'ignoreip= 127.0.0.1/8 54.202.47.211' >> /etc/fail2ban/jail.conf
+sudo service fail2ban restart
 
 sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
 
