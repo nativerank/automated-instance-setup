@@ -46,7 +46,7 @@ sudo -u daemon wp plugin install wp-fail2ban --activate
 cp /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins/wp-fail2ban/filters.d/wordpress-hard.conf /etc/fail2ban/filter.d/
 
 printf '\n\n%s\n\n' '[wordpress-hard]' >> /etc/fail2ban/jail.conf
-printf '%s\n' 'enabled = true' 'filter = wordpress-hard' 'logpath = /var/log/auth.log' 'maxretry = 3' 'port = http,https' 'ignoreip= 127.0.0.1/8 54.202.47.211' >> /etc/fail2ban/jail.conf
+printf '%s\n' 'enabled = true' 'filter = wordpress-hard' 'logpath = /var/log/auth.log' 'maxretry = 3' 'port = http,https' 'ignoreip= 127.0.0.1/8 50.207.91.158' >> /etc/fail2ban/jail.conf
 sudo service fail2ban restart
 
 sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
