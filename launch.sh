@@ -106,4 +106,5 @@ sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
 
 # bitnami comes with one default vhost. Simply replace the example domain 
 sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
+sed -i -e "s/www.//i" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
 echo Include "/opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
