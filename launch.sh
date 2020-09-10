@@ -119,7 +119,7 @@ sed -i '1s/^/RewriteEngine On\nRewriteCond %{REMOTE_ADDR} !=50.207.91.158\nRewri
 # bitnami comes with one default vhost. Simply replace the example domain 
 sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
 sed -i -e "s/www.//i" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
-sed -i -e "s/\/opt\/bitnami\/apps\/wordpress\/conf\/certs\/\/opt\/bitnami\/apache2\/conf\//i" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
+sed -i 's/\/opt\/bitnami\/apps\/wordpress\/conf\/certs\/\/opt\/bitnami\/apache2\/conf\//i' /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
 echo Include "/opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
 
 /opt/bitnami/ctlscript.sh restart
