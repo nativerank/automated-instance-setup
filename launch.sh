@@ -113,16 +113,13 @@ fi
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
 sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
 
-# Copy default self-signed certs so it doesn't print warning in logs
-sudo cp /opt/bitnami/apache2/conf/server.crt /opt/bitnami/apps/wordpress/conf/certs/server.crt
-sudo cp /opt/bitnami/apache2/conf/server.key /opt/bitnami/apps/wordpress/conf/certs/server.key
-
 # 403 if user is accessing directly
 sed -i '1s/^/RewriteEngine On\nRewriteCond %{REMOTE_ADDR} !=50.207.91.158\RewriteCond %{REMOTE_ADDR} !=3.16.217.226\nRewriteRule \"^\" \"\/\" [R=403,L]\nRewriteEngine Off\nErrorDocument 403 \"403 - You shall not pass.\"\n/' /opt/bitnami/apps/wordpress/conf/httpd-prefix.conf
 
 # bitnami comes with one default vhost. Simply replace the example domain 
 sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
 sed -i -e "s/www.//i" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
+sed -i -e "s/\/opt\/bitnami\/apps\/wordpress\/conf\/certs\/\/opt\/bitnami\/apache2\/conf\//i" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
 echo Include "/opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
 
 /opt/bitnami/ctlscript.sh restart
