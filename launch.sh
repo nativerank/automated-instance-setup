@@ -32,7 +32,7 @@ sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache
 sed -i 's/RequestHeader unset Proxy early/RequestHeader unset Proxy early\nHeader always set X-XSS-Protection "1; mode=block"\nHeader always set X-Content-Type-Options nosniff\nHeader always set Strict-Transport-Security "max-age=15768000; includeSubDomains"\n/i' /opt/bitnami/apache2/conf/httpd.conf
 
 # Turn off expose_php in php.ini
-ssed -i 's/expose_php \?= \?On/expose_php = Off/i' /opt/bitnami/php/etc/php.ini
+sed -i 's/expose_php \?= \?On/expose_php = Off/i' /opt/bitnami/php/etc/php.ini
 
 /opt/bitnami/apps/wordpress/bnconfig --disable_banner 1
 
