@@ -154,6 +154,7 @@ initiate_lighsailScript() {
  
   printf -- "\n Configuring WP Rocket plugin and setting WP_CACHE....... \n"
   wp plugin install https://wp-rocket.me/download/126649/9c61671e/ --activate
+  wp plugin deactivate w3-total-cache --uninstall
 
   wp option update wp_rocket_settings "$WP_ROCKET_SETTINGS" --format=json
   ZONE_ID=$(curl -X POST -H "Content-Type: application/json" -d "{\"domain\": \"${SITE_URL}\"}" https://nativerank.dev/cloudflareapi/zone_id)
@@ -200,8 +201,6 @@ initiate_lighsailScript() {
     fi
   fi
     
-  
-  
   wp option delete nativerank_seo_wp_last_sync --skip-plugins=w3-total-cache 
 
 }
