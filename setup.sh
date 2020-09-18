@@ -187,7 +187,7 @@ initiate_lighsailScript() {
   if [[ -n "$USER_ID" ]] && [[ -n "$WP_PASSWORD" ]]; then
     wp user update "$USER_ID" --user_pass="$WP_PASSWORD"
     if [[ -n "$TEMP_USER_ID" ]]; then
-      initiate_deleteTempUser
+      deleteTempUser
     fi
   else
     if [[ -n "$TEMP_USER_ID" ]] && [[ -n "$WP_PASSWORD" ]]; then
@@ -195,7 +195,7 @@ initiate_lighsailScript() {
       wp user create nativeaccess qa@nativerank.zohosupport.com --user_pass="$WP_PASSWORD" --role=administrator
       USER_ID=$(wp user list | grep 'nativeaccess' | head -c 1)
       if [[ -n "$USER_ID" ]]; then
-        initiate_deleteTempUser
+        deleteTempUser
       fi
     fi
   fi
