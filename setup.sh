@@ -9,6 +9,7 @@ DEVSITE_SLUG=$(wp option get wp_nr_dev_slug)
 WP_ROCKET_SETTINGS='{"analytics_enabled":"1","cache_mobile":1,"purge_cron_interval":0,"purge_cron_unit":"HOUR_IN_SECONDS","minify_html":1,"minify_google_fonts":1,"remove_query_strings":1,"minify_css":1,"minify_concatenate_css":1,"exclude_css":[],"critical_css":"","minify_js":1,"minify_concatenate_js":1,"exclude_inline_js":["recaptcha"],"exclude_js":[],"defer_all_js":1,"defer_all_js_safe":1,"emoji":1,"manual_preload":1,"sitemap_preload":1,"yoast_xml_sitemap":"1","sitemaps":[],"dns_prefetch":[],"cache_reject_uri":[],"cache_reject_cookies":[],"cache_reject_ua":[],"cache_purge_pages":[],"cache_query_strings":[],"automatic_cleanup_frequency":"","cdn_cnames":[],"cdn_zone":[],"cdn_reject_files":[],"heartbeat_admin_behavior":"reduce_periodicity","heartbeat_editor_behavior":"reduce_periodicity","heartbeat_site_behavior":"reduce_periodicity","google_analytics_cache":"1","cloudflare_email":"info@nativerank.com","cloudflare_zone_id":"","sucury_waf_api_key":"","consumer_key":"9c61671e","consumer_email":"websupport@nativerank.com","secret_key":"d46fe5bc","license":"1584626253","secret_cache_key":"5e7cb30fed140242993260","minify_css_key":"5e7cb336a02a9310104205","minify_js_key":"5e7cb336a02b1548322986","version":"3.5.1","cloudflare_old_settings":"","sitemap_preload_url_crawl":"500000","cache_ssl":1,"do_beta":0,"cache_logged_user":0,"do_caching_mobile_files":0,"embeds":0,"lazyload":0,"lazyload_iframes":0,"lazyload_youtube":0,"async_css":0,"database_revisions":0,"database_auto_drafts":0,"database_trashed_posts":0,"database_spam_comments":0,"database_trashed_comments":0,"database_expired_transients":0,"database_all_transients":0,"database_optimize_tables":0,"schedule_automatic_cleanup":0,"do_cloudflare":0,"cloudflare_devmode":0,"cloudflare_auto_settings":1,"cloudflare_protocol_rewrite":0,"sucury_waf_cache_sync":0,"control_heartbeat":0,"cdn":0,"varnish_auto_purge":0}'
 CLOUDFLARE_API_KEY=$(wp option pluck wp_rocket_settings cloudflare_api_key)
 WP_PASSWORD=$(cat /tmp/wp_password/wp_password.txt)
+USER_ID=$(wp user list | grep 'nativeaccess' | head -c 1)
 TEMP_USER_ID=$(wp user list | grep 'admin\b' | head -c 1)
 SITE_URL=$(wp config get WP_NR_SITEURL)
 PUBLIC_IP=$(wp config get PUBLIC_IP)
@@ -88,6 +89,8 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   printf -- "\n CORRECT SYNTAX ---> ${FORMAT} \n"
   exit 64
 fi
+
+
 
 
 initiate_lighsailScript() {  
@@ -180,20 +183,33 @@ initiate_lighsailScript() {
 
   wp option update siteurl "https://${SITE_URL}"
   wp option update home "https://${SITE_URL}"
-    
-  if [[ -n "$TEMP_USER_ID" ]] && [[ -n "$WP_PASSWORD" ]]; then
-    printf -- "\n Creating nativeaccess user....... \n"
-    wp user create nativeaccess qa@nativerank.zohosupport.com --user_pass="$WP_PASSWORD" --role=administrator
-    USER_ID=$(wp user list | grep 'nativeaccess' | head -c 1)
-    if [[ -n "$USER_ID" ]]; then
-      printf -- "\n Deleting temp user....... \n"
-      wp user delete "$TEMP_USER_ID" --reassign="$USER_ID" --yes
-      rm -f /tmp/wp_password/wp_password.txt
+  
+  if [[ -n "$USER_ID" ]] && [[ -n "$WP_PASSWORD" ]]; then
+    wp user update "$USER_ID" --user_pass="$WP_PASSWORD"
+    if [[ -n "$TEMP_USER_ID" ]]; then
+      initiate_deleteTempUser
+    fi
+  else
+    if [[ -n "$TEMP_USER_ID" ]] && [[ -n "$WP_PASSWORD" ]]; then
+      printf -- "\n Creating nativeaccess user....... \n"
+      wp user create nativeaccess qa@nativerank.zohosupport.com --user_pass="$WP_PASSWORD" --role=administrator
+      USER_ID=$(wp user list | grep 'nativeaccess' | head -c 1)
+      if [[ -n "$USER_ID" ]]; then
+        initiate_deleteTempUser
+      fi
     fi
   fi
+    
+  
   
   wp option delete nativerank_seo_wp_last_sync --skip-plugins=w3-total-cache 
 
+}
+
+deleteTempUser() {
+      printf -- "\n Deleting temp user....... \n"
+      wp user delete "$TEMP_USER_ID" --reassign="$USER_ID" --yes
+      rm -f /tmp/wp_password/wp_password.txt
 }
 
 printf -- "\n Initiating scripts... \n"
