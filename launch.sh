@@ -24,10 +24,6 @@ sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updr
 # ensure WP Rocket can cache the site
 sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
 
-# pagespeed
-sed -i "s/ModPagespeed on/ModPagespeed on\n\nModPagespeedRespectXForwardedProto on\nModPagespeedLoadFromFileMatch \"^https\?:\/\/${SITE_URL}\/\" \"\/opt\/bitnami\/apps\/wordpress\/htdocs\/\"\n\nModPagespeedLoadFromFileRuleMatch Disallow .\*;\n\nModPagespeedLoadFromFileRuleMatch Allow \\\.css\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.jpe\?g\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.png\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.gif\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.js\$;\n\nModPagespeedDisallow \"\*favicon\*\"\nModPagespeedDisallow \"\*.svg\"\nModPagespeedDisallow \"\*.mp4\"\nModPagespeedDisallow \"\*.txt\"\nModPagespeedDisallow \"\*.xml\"\n\nModPagespeedInPlaceSMaxAgeSec -1\nModPagespeedLazyloadImagesAfterOnload off/g" /opt/bitnami/apache2/conf/pagespeed.conf
-sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache2/conf/pagespeed.conf
-
 # Security headers
 sed -i 's/RequestHeader unset Proxy early/RequestHeader unset Proxy early\nHeader always set X-XSS-Protection "1; mode=block"\nHeader always set X-Content-Type-Options nosniff\nHeader always set Strict-Transport-Security "max-age=15768000; includeSubDomains"\n/i' /opt/bitnami/apache2/conf/httpd.conf
 
@@ -112,6 +108,12 @@ fi
 
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
 sudo -u bitnami wp config set WP_NR_SITEURL "${SITE_URL}"
+
+printf -- "\n Configuring Pagespeed module \n"
+
+# pagespeed
+sed -i "s/ModPagespeed on/ModPagespeed on\n\nModPagespeedRespectXForwardedProto on\nModPagespeedLoadFromFileMatch \"^https\?:\/\/${SITE_URL}\/\" \"\/opt\/bitnami\/apps\/wordpress\/htdocs\/\"\n\nModPagespeedLoadFromFileRuleMatch Disallow .\*;\n\nModPagespeedLoadFromFileRuleMatch Allow \\\.css\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.jpe\?g\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.png\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.gif\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.js\$;\n\nModPagespeedDisallow \"\*favicon\*\"\nModPagespeedDisallow \"\*.svg\"\nModPagespeedDisallow \"\*.mp4\"\nModPagespeedDisallow \"\*.txt\"\nModPagespeedDisallow \"\*.xml\"\n\nModPagespeedInPlaceSMaxAgeSec -1\nModPagespeedLazyloadImagesAfterOnload off/g" /opt/bitnami/apache2/conf/pagespeed.conf
+sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache2/conf/pagespeed.conf
 
 # 403 if user is accessing directly
 sed -i '1s/^/RewriteEngine On\nRewriteCond %{REMOTE_ADDR} !=50.207.91.158\nRewriteCond %{REMOTE_ADDR} !=3.16.217.226\nRewriteRule \"^\" \"\/\" [R=403,L]\nRewriteEngine Off\nErrorDocument 403 \"403 - You shall not pass.\"\n/' /opt/bitnami/apps/wordpress/conf/httpd-prefix.conf
