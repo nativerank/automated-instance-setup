@@ -112,7 +112,7 @@ initiate_lighsailScript() {
   printf -- "\n Replacing devsite slug with production (unescaped) URL....... \n"
   wp search-replace "nativerank.dev/${DEVSITE_SLUG}" "${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only
 
-  printf -- "\n Running the same replacements on Less, CSS, Handlebars templates, and data.json....... \n"
+  printf -- "\n Running the same replacements on Less, CSS, JS, Handlebars templates, and data.json....... \n"
 
   ### .LESS ###
 
@@ -133,6 +133,16 @@ initiate_lighsailScript() {
   find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
 
   find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
+  
+  ### .JS ###
+  
+  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
+  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
+
+  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/http:/https:/g" {} +
+  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
+
+  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
 
   ### DATA.JSON ###
 
