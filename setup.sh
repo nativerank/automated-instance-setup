@@ -167,7 +167,6 @@ initiate_lighsailScript() {
   wp plugin deactivate w3-total-cache --uninstall
 
   wp option update wp_rocket_settings "$WP_ROCKET_SETTINGS" --format=json
-  ZONE_ID=$(curl -X POST -H "Content-Type: application/json" -d "{\"domain\": \"${SITE_URL}\"}" https://nativerank.dev/cloudflareapi/zone_id)
 
   if [[ -n "$CLOUDFLARE_API_KEY" ]]; then
     echo "$CLOUDFLARE_API_KEY" | wp option patch insert wp_rocket_settings cloudflare_api_key
