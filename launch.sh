@@ -3,7 +3,7 @@
 set -xv
 
 # get public ip
-PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+PUBLIC_IP="$(curl ipinfo.io/ip)"
 
 # delete siteurl and home url from wp config so they'll only use option values, so our setup script (runs as daemon) can update them
 sudo -u bitnami wp config delete WP_SITEURL
