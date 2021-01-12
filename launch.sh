@@ -5,15 +5,19 @@ set -xv
 # get public ip
 PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 
-# save to wp config
-sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
+
 
 # delete siteurl and home url from wp config so they'll only use option values, so our setup script (runs as daemon) can update them
 sudo -u bitnami wp config delete WP_SITEURL
 sudo -u bitnami wp config delete WP_HOME
 
-sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
-sudo -u daemon wp option update home "http://${PUBLIC_IP}"
+if [[ -n "${PUBLIC_IP}" ]]; then
+  # save IP to wp config
+  sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
+  # set siteurl to public ip
+  sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
+  sudo -u daemon wp option update home "http://${PUBLIC_IP}"
+fi
 
 # set permissions for some plugin installation, etc. later on
 chown -R daemon:bitnami /opt/bitnami/apps/wordpress/htdocs/wp-content/
