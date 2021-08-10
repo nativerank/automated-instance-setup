@@ -6,25 +6,25 @@ set -xv
 PUBLIC_IP="$(curl ipinfo.io/ip)"
 
 # delete siteurl and home url from wp config so they'll only use option values, so our setup script (runs as daemon) can update them
-sudo -u bitnami wp config delete WP_SITEURL
-sudo -u bitnami wp config delete WP_HOME
+wp config delete WP_SITEURL
+wp config delete WP_HOME
 
 if [[ -n "${PUBLIC_IP}" ]]; then
   # save IP to wp config
-  sudo -u bitnami wp config set PUBLIC_IP "${PUBLIC_IP}"
+  wp config set PUBLIC_IP "${PUBLIC_IP}"
   # set siteurl to public ip
-  sudo -u daemon wp option update siteurl "http://${PUBLIC_IP}"
-  sudo -u daemon wp option update home "http://${PUBLIC_IP}"
+  wp option update siteurl "http://${PUBLIC_IP}"
+  wp option update home "http://${PUBLIC_IP}"
 fi
 
 # set permissions for some plugin installation, etc. later on
 chown -R daemon:bitnami /opt/bitnami/apps/wordpress/htdocs/wp-content/
 
 # install updraftplus
-sudo -u daemon wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
+wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
 
 # ensure WP Rocket can cache the site
-sudo -u bitnami wp config set WP_CACHE true --raw --type=constant
+wp config set WP_CACHE true --raw --type=constant
 
 # Security headers
 sed -i 's/RequestHeader unset Proxy early/RequestHeader unset Proxy early\nHeader always set X-XSS-Protection "1; mode=block"\nHeader always set X-Content-Type-Options nosniff\nHeader always set Strict-Transport-Security "max-age=15768000; includeSubDomains"\n/i' /opt/bitnami/apache2/conf/httpd.conf
@@ -47,7 +47,7 @@ apt-get install redis-server -y
 # printf '%s\n' 'enabled = true' 'filter = wordpress-hard' 'logpath = /var/log/auth.log' 'maxretry = 3' 'port = http,https' 'ignoreip= 127.0.0.1/8 50.207.91.158' >> /etc/fail2ban/jail.conf
 # sudo service fail2ban restart
 
-sudo -u bitnami wp config set WP_REDIS_CLIENT credis --type=constant
+wp config set WP_REDIS_CLIENT credis --type=constant
 
 if [[ -z "$1" ]] || [[ -z "$2" ]]; then
   exit 64
@@ -97,8 +97,8 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   exit 64
 fi
 
-sudo -u daemon wp user create admin websupport@nativerank.com --role=administrator
-sudo -u daemon wp user update 2 --user_pass="$TEMP_PASSWORD"
+wp user create admin websupport@nativerank.com --role=administrator
+wp user update 2 --user_pass="$TEMP_PASSWORD"
 
 if [[ -n "$PASSWORD" ]]; then
   mkdir /tmp/wp_password/
