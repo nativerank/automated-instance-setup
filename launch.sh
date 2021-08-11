@@ -103,8 +103,12 @@ if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   exit 64
 fi
 
-wp user create admin websupport@nativerank.com --role=administrator
+USER_CREATION=$(wp user create admin websupport@nativerank.com --role=administrator)
+
+echo "${USER_CREATION}"
+
 wp user update 2 --user_pass="$TEMP_PASSWORD"
+
 
 if [[ -n "$PASSWORD" ]]; then
   mkdir /tmp/wp_password/
