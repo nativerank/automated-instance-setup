@@ -5,6 +5,8 @@ set -xv
 # get public ip
 PUBLIC_IP="$(curl ipinfo.io/ip)"
 
+# chmod 664 /bitnami/wordpress/wp-config.php
+
 # delete siteurl and home url from wp config so they'll only use option values, so our setup script (runs as daemon) can update them
 wp config delete WP_SITEURL
 wp config delete WP_HOME
@@ -49,8 +51,14 @@ apt-get install redis-server -y
 
 wp config set WP_REDIS_CLIENT credis --type=constant
 
-if [[ -z "$1" ]] || [[ -z "$2" ]]; then
-  exit 64
+if [[ -z "$1" ]]; then
+    printf -- "\n Site URL is required! \n"
+    exit 64
+fi
+
+if [[ -z "$2" ]]; then
+   printf -- "\n Must provide temporary password! \n"
+   exit 64
 fi
 
 for i in "$@"; do
