@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+whoami
+
 # get public ip
 PUBLIC_IP="$(curl ipinfo.io/ip)"
 
