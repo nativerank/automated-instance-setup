@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -xv
-
 # get public ip
 PUBLIC_IP="$(curl ipinfo.io/ip)"
 
