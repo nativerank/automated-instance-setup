@@ -18,7 +18,7 @@ if [[ -n "${PUBLIC_IP}" ]]; then
 fi
 
 # set permissions for some plugin installation, etc. later on
-chown -R daemon:bitnami /opt/bitnami/apps/wordpress/htdocs/wp-content/
+chown -R daemon:bitnami /opt/bitnami/wordpress/wp-content/
 
 # install updraftplus
 wp plugin install https://updraftplus.com/wp-content/uploads/updraftplus.zip --activate
@@ -32,7 +32,7 @@ sed -i 's/RequestHeader unset Proxy early/RequestHeader unset Proxy early\nHeade
 # Turn off expose_php in php.ini
 sed -i 's/expose_php \?= \?On/expose_php = Off/i' /opt/bitnami/php/etc/php.ini
 
-/opt/bitnami/apps/wordpress/bnconfig --disable_banner 1
+/opt/bitnami/wordpress/bnconfig --disable_banner 1
 
 # install redis-server
 apt-get update
@@ -41,7 +41,7 @@ apt-get install redis-server -y
 # install fail2ban and wp-fail2ban
 # apt-get install fail2ban -y
 # sudo -u daemon wp plugin install wp-fail2ban --activate
-# cp /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins/wp-fail2ban/filters.d/wordpress-hard.conf /etc/fail2ban/filter.d/
+# cp /opt/bitnami/wordpress/wp-content/plugins/wp-fail2ban/filters.d/wordpress-hard.conf /etc/fail2ban/filter.d/
 
 # printf '\n\n%s\n\n' '[wordpress-hard]' >> /etc/fail2ban/jail.conf
 # printf '%s\n' 'enabled = true' 'filter = wordpress-hard' 'logpath = /var/log/auth.log' 'maxretry = 3' 'port = http,https' 'ignoreip= 127.0.0.1/8 50.207.91.158' >> /etc/fail2ban/jail.conf
@@ -102,8 +102,8 @@ wp user update 2 --user_pass="$TEMP_PASSWORD"
 
 if [[ -n "$PASSWORD" ]]; then
   mkdir /tmp/wp_password/
-  touch /tmp/wp_password/wp_password.txt 
-  echo "$PASSWORD" > /tmp/wp_password/wp_password.txt 
+  touch /tmp/wp_password/wp_password.txt
+  echo "$PASSWORD" > /tmp/wp_password/wp_password.txt
   chown -R daemon:daemon /tmp/wp_password/
   chmod -R 770 /tmp/wp_password/
 fi
@@ -116,12 +116,12 @@ sed -i "s/ModPagespeed on/ModPagespeed on\n\nModPagespeedRespectXForwardedProto 
 sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache2/conf/pagespeed.conf
 
 # 403 if user is accessing directly
-sed -i '1s/^/RewriteEngine On\nRewriteCond %{REMOTE_ADDR} !=50.207.91.158\nRewriteCond %{REMOTE_ADDR} !=3.16.217.226\nRewriteRule \"^\" \"\/\" [R=403,L]\nRewriteEngine Off\nErrorDocument 403 \"403 - You shall not pass.\"\n/' /opt/bitnami/apps/wordpress/conf/httpd-prefix.conf
+sed -i '1s/^/RewriteEngine On\nRewriteCond %{REMOTE_ADDR} !=50.207.91.158\nRewriteCond %{REMOTE_ADDR} !=3.16.217.226\nRewriteRule \"^\" \"\/\" [R=403,L]\nRewriteEngine Off\nErrorDocument 403 \"403 - You shall not pass.\"\n/' /opt/bitnami/wordpress/conf/httpd-prefix.conf
 
-# bitnami comes with one default vhost. Simply replace the example domain 
-sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
-sed -i -e "s/www.//i" /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
-sed -i 's/\/opt\/bitnami\/apps\/wordpress\/conf\/certs\//\/opt\/bitnami\/apache2\/conf\//i' /opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf
-echo Include "/opt/bitnami/apps/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
+# bitnami comes with one default vhost. Simply replace the example domain
+sed -i -e "s/wordpress.example.com/${SITE_URL}/g" /opt/bitnami/wordpress/conf/httpd-vhosts.conf
+sed -i -e "s/www.//i" /opt/bitnami/wordpress/conf/httpd-vhosts.conf
+sed -i 's/\/opt\/bitnami\/apps\/wordpress\/conf\/certs\//\/opt\/bitnami\/apache2\/conf\//i' /opt/bitnami/wordpress/conf/httpd-vhosts.conf
+echo Include "/opt/bitnami/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
 
 /opt/bitnami/ctlscript.sh restart
