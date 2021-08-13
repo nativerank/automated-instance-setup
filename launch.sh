@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
-whoami
-
 # get public ip
 PUBLIC_IP="$(curl ipinfo.io/ip)"
+
+cd /opt/bitnami/wp-cli/bin
+
+rm -f wp
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+cp wp-cli.phar wp
+chmod +x wp
+chown daemon:daemon wp
 
 # chmod 664 /bitnami/wordpress/wp-config.php
 
@@ -110,7 +116,6 @@ USER_CREATION=$(wp user create admin websupport@nativerank.com --role=administra
 echo "${USER_CREATION}"
 
 wp user update 2 --user_pass="$TEMP_PASSWORD"
-
 
 if [[ -n "$PASSWORD" ]]; then
   mkdir /tmp/wp_password/
