@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+revertWPConfigPermissions() {
+    chmod 644 /bitnami/wordpress/wp-config.php
+}
+
+chmod 664 /bitnami/wordpress/wp-config.php
+
 # get public ip
 PUBLIC_IP="$(curl ipinfo.io/ip)"
 
@@ -49,11 +55,17 @@ wp config set WP_REDIS_CLIENT credis --type=constant
 
 if [[ -z "$1" ]]; then
     printf -- "\n Site URL is required! \n"
+    revertWPConfigPermissions
+    wait
+
     exit 64
 fi
 
 if [[ -z "$2" ]]; then
    printf -- "\n Must provide temporary password! \n"
+   revertWPConfigPermissions
+   wait
+
    exit 64
 fi
 
@@ -79,25 +91,33 @@ done
 
 if [[ $SITE_URL == *http* ]]; then
   printf -- "\n Site URL cannot contain protocol \n"
+  revertWPConfigPermissions
+  wait
+
   exit 64
 fi
 
-# if [[ $SITE_URL != www* ]]; then
-#   exit 64
-# fi
-
 if [[ "${SITE_URL}" == */* ]]; then
   printf -- "\n Site URL cannot start with a slash \n"
+  revertWPConfigPermissions
+  wait
+
   exit 64
 fi
 
 if [[ "${SITE_URL}" == *. ]]; then
   printf -- "\n Site URL must contain a TLD (top-level domain) \n"
+  revertWPConfigPermissions
+  wait
+
   exit 64
 fi
 
 if [[ "${SITE_URL}" == www.DOMAIN.com ]]; then
   printf -- "\n Make sure to insert your Site URL in place of 'www.DOMAIN.com' \n"
+  revertWPConfigPermissions
+  wait
+
   exit 64
 fi
 
@@ -132,3 +152,8 @@ sed -i 's/\/opt\/bitnami\/apps\/wordpress\/conf\/certs\//\/opt\/bitnami\/apache2
 echo Include "/opt/bitnami/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
 
 /opt/bitnami/ctlscript.sh restart
+
+revertWPConfigPermissions
+wait
+printf -- "\n Setup Lightsail instance for ${SITE_URL} \n"
+exit 0
