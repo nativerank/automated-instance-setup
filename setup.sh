@@ -116,44 +116,44 @@ initiate_lighsailScript() {
   printf -- "\n Running the same replacements on Less, CSS, JS, Handlebars templates, and data.json....... \n"
   ### .LESS ###
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/http:/https:/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/http:/https:/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/less/src/ -iname "*.less" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
 
   ### .CSS ###
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/http:/https:/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/http:/https:/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/css/ -iname "*.css" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
 
   ### .JS ###
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/http:/https:/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/http:/https:/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/https:\/\/nativerank.dev/nativerank.dev/g" {} +
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/js/ -iname "*.js" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
 
   ### DATA.JSON ###
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/ -iname "data.json" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/ -iname "data.json" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}//g" {} +
 
   ### .HBS ###
 
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}/${SITE_URL}/g" {} +
-  find /home/bitnami/apps/wordpress/htdocs/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/http:\/\/${SITE_URL}/https:\/\/${SITE_URL}/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/nrdevsites.com/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/www.nativerank.dev/nativerank.dev/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/nativerank.dev\/${DEVSITE_SLUG}/${SITE_URL}/g" {} +
+  find /opt/bitnami/wordpress/wp-content/themes/yootheme_child/templates/ -iname "*.hbs" -exec sed -i "s/http:\/\/${SITE_URL}/https:\/\/${SITE_URL}/g" {} +
 
   printf -- "\n Making it secure [http -> https]....... \n"
   /tmp/wp search-replace "http://${SITE_URL}" "https://${SITE_URL}" --skip-plugins=w3-total-cache --all-tables --report-changed-only --path="/opt/bitnami/wordpress"
