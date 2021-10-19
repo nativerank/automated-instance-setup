@@ -129,7 +129,10 @@ fi
 printf -- "\n Setting WP_NR_SITEURL in WP Config \n"
 /opt/bitnami/wp-cli/bin/wp config set WP_NR_SITEURL "${SITE_URL}"
 
-printf -- "\n Configuring Pagespeed module \n"
+printf -- "\n Disabling Pagespeed module \n"
+sed -i "s/Include conf\/pagespeed/#Include conf\/pagespeed/g" /opt/bitnami/apache2/conf/httpd.conf
+
+# configure pagespeed just in case we enable it later (conflicts with WP Rocket https://docs.wp-rocket.me/article/1376-mod-pagespeed)
 sed -i "s/ModPagespeed on/ModPagespeed on\n\nModPagespeedRespectXForwardedProto on\nModPagespeedLoadFromFileMatch \"^https\?:\/\/${SITE_URL}\/\" \"\/opt\/bitnami\/apps\/wordpress\/htdocs\/\"\n\nModPagespeedLoadFromFileRuleMatch Disallow .\*;\n\nModPagespeedLoadFromFileRuleMatch Allow \\\.css\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.jpe\?g\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.png\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.gif\$;\nModPagespeedLoadFromFileRuleMatch Allow \\\.js\$;\n\nModPagespeedDisallow \"\*favicon\*\"\nModPagespeedDisallow \"\*.svg\"\nModPagespeedDisallow \"\*.mp4\"\nModPagespeedDisallow \"\*.txt\"\nModPagespeedDisallow \"\*.xml\"\n\nModPagespeedInPlaceSMaxAgeSec -1\nModPagespeedLazyloadImagesAfterOnload off/g" /opt/bitnami/apache2/conf/pagespeed.conf
 sed -i "s/inline_css/inline_css,hint_preload_subresources/g" /opt/bitnami/apache2/conf/pagespeed.conf
 
