@@ -147,6 +147,19 @@ echo Include "/opt/bitnami/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apa
 
 /opt/bitnami/ctlscript.sh restart
 
+
+# enable Varnish
+[ -f /opt/bitnami/scripts/varnish/start.sh.disabled ] && sudo mv /opt/bitnami/scripts/varnish/start.sh.disabled /opt/bitnami/scripts/varnish/start.sh
+sudo mv /etc/monit/conf.d/varnish.conf.disabled /etc/monit/conf.d/varnish.conf
+sudo gonit reload
+
+sudo cp /opt/bitnami/varnish/etc/varnish/default.vcl /opt/bitnami/varnish/etc/varnish/default.vcl.backup
+
+
+
+
+
+
 revertWPConfigPermissions
 wait
 printf -- "\n Setup Lightsail instance for ${SITE_URL} \n"
