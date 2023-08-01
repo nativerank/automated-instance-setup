@@ -145,7 +145,6 @@ sed -i -e "s/www.//i" /opt/bitnami/wordpress/conf/httpd-vhosts.conf
 sed -i 's/\/opt\/bitnami\/apps\/wordpress\/conf\/certs\//\/opt\/bitnami\/apache2\/conf\//i' /opt/bitnami/wordpress/conf/httpd-vhosts.conf
 echo Include "/opt/bitnami/wordpress/conf/httpd-vhosts.conf" >> /opt/bitnami/apache2/conf/bitnami/bitnami-apps-vhosts.conf
 
-/opt/bitnami/ctlscript.sh restart
 
 
 # enable Varnish
@@ -155,9 +154,15 @@ sudo gonit reload
 
 sudo cp /opt/bitnami/varnish/etc/varnish/default.vcl /opt/bitnami/varnish/etc/varnish/default.vcl.backup
 
+sudo rm -rf /opt/bitnami/varnish/etc/varnish/default.vcl
+sudo wget https://raw.githubusercontent.com/nativerank/automated-instance-setup/beta/default.vcl -O /opt/bitnami/varnish/etc/varnish/default.vcl
 
 
+sed -i -e "s/Listen 80/Listen 8080/g" /opt/bitnami/apache/conf/httpd.conf
+sed -i -e "s/:80/:8080/g" /opt/bitnami/apache/conf/vhosts/wordpress-vhost.conf
+echo "export VARNISH_PORT_NUMBER=80" | sudo tee -a /opt/bitnami/scripts/varnish-env.sh
 
+/opt/bitnami/ctlscript.sh restart
 
 
 revertWPConfigPermissions
